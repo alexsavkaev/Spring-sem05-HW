@@ -2,6 +2,7 @@ package ru.gb.sem05.HOMEWORK.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.gb.sem05.HOMEWORK.annotations.TrackUserAction;
 import ru.gb.sem05.HOMEWORK.model.Task;
 import ru.gb.sem05.HOMEWORK.model.TaskStatus;
 import ru.gb.sem05.HOMEWORK.repository.TaskRepository;
@@ -23,7 +24,7 @@ public class TaskService {
      * Получить все задачи
      * @return список задач
      */
-
+    @TrackUserAction
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
@@ -33,7 +34,7 @@ public class TaskService {
      * @param id идентификатор задачи
      * @return Optional объект задачи
      */
-
+    @TrackUserAction
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
@@ -43,7 +44,7 @@ public class TaskService {
      * @param task сохраняемая задача
      * @return сохраненная задача
      */
-
+    @TrackUserAction
     public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
@@ -53,7 +54,7 @@ public class TaskService {
      * @param status искомый статус
      * @return список задач, имеющих искомый статус
      */
-
+    @TrackUserAction
     public List<Task> getTasksByStatus(TaskStatus status) {
         return taskRepository.findByStatus(status);
     }
@@ -64,7 +65,7 @@ public class TaskService {
      * @param updatedTask новые данные к обновлению
      * @return обновленная задача
      */
-
+    @TrackUserAction
     public Task updateTask(Long id, Task updatedTask) {
         Optional<Task> task = taskRepository.findById(id);
         if (task.isPresent()) {
@@ -82,7 +83,7 @@ public class TaskService {
      * Удаление задачи по id
      * @param id идентификатор задачи
      */
-
+    @TrackUserAction
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
