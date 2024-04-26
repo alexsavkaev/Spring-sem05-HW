@@ -1,11 +1,13 @@
 package ru.gb.sem05.HOMEWORK.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.sem05.HOMEWORK.decorator.UpdateTaskDeco;
 import ru.gb.sem05.HOMEWORK.exceptions.TaskNotFoundException;
 import ru.gb.sem05.HOMEWORK.model.Task;
 import ru.gb.sem05.HOMEWORK.model.TaskStatus;
+import ru.gb.sem05.HOMEWORK.services.FileGateWay;
 import ru.gb.sem05.HOMEWORK.services.TaskService;
 
 import java.util.List;
@@ -19,8 +21,9 @@ import java.util.Optional;
 @RequestMapping("/tasks")
 @AllArgsConstructor
 public class TaskController {
+    @Autowired
+    private final FileGateWay fileGateWay;
     private final UpdateTaskDeco updateTaskDeco;
-
     private final TaskService taskService;
 
     /**
@@ -101,12 +104,13 @@ public class TaskController {
     }
 
     /**
-     * Добавить новую задачу
+     * Добавить новую задачу и записывает ее в файл с задачами
      * @param task Задача в теле запроса
      * @return Добавленная задача
      */
     @PostMapping("/add")
     public Task addTask(@RequestBody Task task) {
+        fileGateWay.writeToFile(task.getName()+".txt", task.toString());
         return taskService.saveTask(task);
     }
 }
