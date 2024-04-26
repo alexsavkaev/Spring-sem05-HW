@@ -2,6 +2,7 @@ package ru.gb.sem05.HOMEWORK.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.sem05.HOMEWORK.decorator.UpdateTaskDeco;
 import ru.gb.sem05.HOMEWORK.exceptions.TaskNotFoundException;
 import ru.gb.sem05.HOMEWORK.model.Task;
 import ru.gb.sem05.HOMEWORK.model.TaskStatus;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("/tasks")
 @AllArgsConstructor
 public class TaskController {
+    private final UpdateTaskDeco updateTaskDeco;
 
     private final TaskService taskService;
 
@@ -62,6 +64,18 @@ public class TaskController {
         Task updatedTask = taskService.getTaskById(id).get();
         updatedTask.setStatus(status);
         return taskService.updateTask(id, updatedTask);
+    }
+
+    /**
+     * Обновить задачу
+     * Принимает все поля для обновления + выводит сообщение об обновлении задачи
+     * @param id id изменяемой задачи
+     * @param updatedTask   новые данные к обновлению
+     * @return обновленная задача
+     */
+    @PutMapping("/update/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        return updateTaskDeco.updateTask(id, updatedTask);
     }
 
     /**
